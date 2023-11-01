@@ -23,6 +23,12 @@ public class CenterstageDetector extends OpenCvPipeline {
         NOT_FOUND
         //left
     }
+    public enum START_POSITION{
+        BLUE_LEFT,
+        BLUE_RIGHT,
+        RED_LEFT,
+        RED_RIGHT
+    }
 
     private Location location;
 
@@ -38,6 +44,7 @@ public class CenterstageDetector extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
         //COLOR BGR240,51,100
         Scalar lowHSV = new Scalar(100,100,100);
