@@ -1,4 +1,4 @@
-package OpenCV;
+package org.firstinspires.ftc.teamcode.opencv;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
