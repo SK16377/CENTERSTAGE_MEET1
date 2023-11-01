@@ -23,12 +23,12 @@ public class CenterstageDetector extends OpenCvPipeline {
         NOT_FOUND
         //left
     }
-    public enum START_POSITION{
-        BLUE_LEFT,
-        BLUE_RIGHT,
-        RED_LEFT,
-        RED_RIGHT
-    }
+//    public enum START_POSITION{
+//        BLUE_LEFT,
+//        BLUE_RIGHT,
+//        RED_LEFT,
+//        RED_RIGHT
+//    }
 
     private Location location;
 
