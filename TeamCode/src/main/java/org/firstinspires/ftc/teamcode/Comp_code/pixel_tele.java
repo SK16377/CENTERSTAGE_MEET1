@@ -1,4 +1,4 @@
-package Comp_code;/*
+package org.firstinspires.ftc.teamcode.Comp_code;/*
  * Some declarations that are boilerplate are
  * skipped for the sake of brevity.
  * Since there are no real values to use, named constants will be used.

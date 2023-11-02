@@ -68,6 +68,7 @@ public class CenterstageAutoMode extends LinearOpMode {
                 break;
             case NOT_FOUND://left
                 dropPurplePixelPose = new Pose2d(-30, -9, Math.toRadians(-45));
+                break;
         }
         midwayPose1 = new Pose2d(-14, 13, Math.toRadians(-45));
         waitSecondsBeforeDrop = 0; //TODO: Adjust time to wait for alliance partner to move from board

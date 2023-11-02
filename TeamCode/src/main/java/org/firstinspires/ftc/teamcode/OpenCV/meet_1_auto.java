@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
-
+//import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,6 +26,12 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(name="Centerstage auto", group="Auto")
 public class meet_1_auto extends LinearOpMode {
     OpenCvCamera webcam;
+    public enum START_POSITION{
+        BLUE_LEFT,
+        BLUE_RIGHT,
+        RED_LEFT,
+        RED_RIGHT
+    }
     @Override
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext
@@ -33,32 +39,37 @@ public class meet_1_auto extends LinearOpMode {
                         "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         CenterstageDetector detector = new CenterstageDetector(telemetry);
+        //START_POSITION position = new CenterstageDetector(telemetry);
         webcam.setPipeline(detector);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-                                     {
+        //private detector.getLocation location = detector.getLocation().LEFT;
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
                                          @Override
-                                         public void onOpened()
-                                         { webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                                         public void onOpened() {
+                                             webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
                                          }
-                                         @Override
-                                         public void onError(int errorCode)
-                                         {
+
+            @Override
+                                         public void onError(int errorCode) {
                                              //This will be called if the camera could not be opened
                                          }
                                      }
+
         );
         Pose2d initPose = new Pose2d(0, 0, 0); // Starting Pose
-        Pose2d moveBeyondTrussPose = new Pose2d(0,0,0);
+        Pose2d moveBeyondTrussPose = new Pose2d(0, 0, 0);
         Pose2d dropPurplePixelPose = new Pose2d(0, 0, 0);
-        Pose2d midwayPose1 = new Pose2d(0,0,0);
-        Pose2d midwayPose1a = new Pose2d(0,0,0);
-        Pose2d intakeStack = new Pose2d(0,0,0);
-        Pose2d midwayPose2 = new Pose2d(0,0,0);
+        Pose2d midwayPose1 = new Pose2d(0, 0, 0);
+        Pose2d midwayPose1a = new Pose2d(0, 0, 0);
+        Pose2d intakeStack = new Pose2d(0, 0, 0);
+        Pose2d midwayPose2 = new Pose2d(0, 0, 0);
         Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
-        Pose2d parkPose = new Pose2d(0,0, 0);
+        Pose2d parkPose = new Pose2d(0, 0, 0);
         double waitSecondsBeforeDrop = 0;
+        new Pose2d(-26, 8, Math.toRadians(0));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
         waitForStart();
+        new Pose2d(-26, 8, Math.toRadians(0));
+
         switch (detector.getLocation()) {
             case LEFT://right
                 dropPurplePixelPose = new Pose2d(-26, 8, Math.toRadians(0));
@@ -68,10 +79,27 @@ public class meet_1_auto extends LinearOpMode {
                 break;
             case NOT_FOUND://left
                 dropPurplePixelPose = new Pose2d(-30, -9, Math.toRadians(-45));
+                break;
         }
-        midwayPose1 = new Pose2d(-14, 13, Math.toRadians(-45));
-        waitSecondsBeforeDrop = 0; //TODO: Adjust time to wait for alliance partner to move from board
-        parkPose = new Pose2d(-8, 30, Math.toRadians(-90));
+            midwayPose1 = new Pose2d(-14, 13, Math.toRadians(-45));
+           // waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+            parkPose = new Pose2d(-8, 30, Math.toRadians(-90));
+
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .strafeToLinearHeading(moveBeyondTrussPose.position, moveBeyondTrussPose.heading)
+                        .strafeToLinearHeading(dropPurplePixelPose.position, dropPurplePixelPose.heading)
+                        .build());
+
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                        .build());
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .strafeToLinearHeading(parkPose.position, parkPose.heading)
+                        //.splineToLinearHeading(parkPose,0)
+                        .build());
         //break;
         webcam.stopStreaming();
     }

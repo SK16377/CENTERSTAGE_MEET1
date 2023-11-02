@@ -23,15 +23,11 @@ public class CenterstageDetector extends OpenCvPipeline {
         NOT_FOUND
         //left
     }
-//    public enum START_POSITION{
-//        BLUE_LEFT,
-//        BLUE_RIGHT,
-//        RED_LEFT,
-//        RED_RIGHT
-//    }
 
-    private Location location;
 
+
+
+    private Location location = Location.LEFT;
     static final Rect LEFT_ROI = new Rect(
             new Point(65, 90),
             new Point(135, 160));
