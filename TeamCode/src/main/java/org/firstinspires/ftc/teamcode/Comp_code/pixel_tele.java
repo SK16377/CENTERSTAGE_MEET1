@@ -80,7 +80,8 @@ public class pixel_tele extends LinearOpMode {
         robot.init(hardwareMap);
         Lift lift = new Lift(hardwareMap);
         waitForStart();
-
+        robot.raxon.setPosition(0);
+        robot.laxon.setPosition(0);
         if (isStopRequested()) return;
 
         intake INTAKE = intake.START;
@@ -156,8 +157,8 @@ public class pixel_tele extends LinearOpMode {
 
                 }
                 if(gamepad2.circle){
-                    robot.raxon.setPosition(.2);
-                    robot.laxon.setPosition(.2);
+                    robot.raxon.setPosition(.4);
+                    robot.laxon.setPosition(.4);
                 }
 //                if(gamepad1.left_trigger == 1){
 //                    robot.wheel.setPosition(1);
@@ -176,6 +177,7 @@ public class pixel_tele extends LinearOpMode {
             //llift.setPower(lift_speed);
              //rlift.setPower(lift_speed);
             lift.update();
+            telemetry.update();
         }
 
     }

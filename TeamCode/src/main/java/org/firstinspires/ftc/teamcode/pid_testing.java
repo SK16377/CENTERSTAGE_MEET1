@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
 @TeleOp
+
 public class pid_testing extends OpMode {
     private PIDController controller;
     public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
@@ -29,6 +30,7 @@ public class pid_testing extends OpMode {
 
 
     @Override
+
     public void init() {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
