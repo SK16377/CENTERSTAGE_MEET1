@@ -74,6 +74,7 @@ public class bot_map
     public Servo drone;
     public Servo wheel;
     public Servo raxon;
+    public Servo wrist;
     public Servo laxon;
     public WebcamName webcam;
 //    public DcMotor rin = null;
@@ -108,7 +109,8 @@ public class bot_map
         wheel = hwMap.get(Servo.class, "wheel");
         raxon = hwMap.get(Servo.class, "raxon");
         laxon = hwMap.get(Servo.class, "laxon");
-
+        wrist = hwMap.get(Servo.class, "wrist");
+        drone = hwMap.get(Servo.class, "drone");
 
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);

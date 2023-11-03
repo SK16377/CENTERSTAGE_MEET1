@@ -61,6 +61,7 @@ public class pixel_tele extends LinearOpMode {
 
     double SpeedAdjust = 1;
     double lift_speed = 0;
+    double servospeed = 0.5;
 
     enum intake {
         START,
@@ -80,8 +81,9 @@ public class pixel_tele extends LinearOpMode {
         robot.init(hardwareMap);
         Lift lift = new Lift(hardwareMap);
         waitForStart();
-        robot.raxon.setPosition(0);
-        robot.laxon.setPosition(0);
+        robot.raxon.setPosition(.9);
+        robot.laxon.setPosition(.1);
+        robot.wrist.setPosition(.15);
         if (isStopRequested()) return;
 
         intake INTAKE = intake.START;
@@ -149,24 +151,32 @@ public class pixel_tele extends LinearOpMode {
                     robot.intake.setPower(-4);
                 }
                 if (gamepad1.right_trigger == 0) {
+                    servospeed = 0.5;
                     robot.intake.setPower(0);
                 }
                 while (gamepad1.left_trigger == 1) {
-                    robot.wheel.setPosition(1);
+                    servospeed = 1;
                     robot.intake.setPower(2);
 
                 }
                 if(gamepad2.circle){
                     robot.raxon.setPosition(.1);
                     robot.laxon.setPosition(.9);
+                    robot.wrist.setPosition(.3);
                 }
                 if(gamepad2.square){
                     robot.raxon.setPosition(.9);
                     robot.laxon.setPosition(.1);
+                   // robot.wrist.setPosition(.3);
                 }
-//                if(gamepad1.left_trigger == 1){
-//                    robot.wheel.setPosition(1);
-//                }
+                if(gamepad2.triangle){
+                    robot.wrist.setPosition(.75);
+                }
+                if(gamepad2.cross){
+                    robot.wrist.setPosition(.15);
+                }
+
+
                 if (gamepad1.left_trigger == 0) {
                     robot.intake.setPower(0);
 
@@ -176,12 +186,18 @@ public class pixel_tele extends LinearOpMode {
                 } else if (gamepad1.right_bumper) {
                     SpeedAdjust = 1;
                 }
+                if(gamepad1.triangle){
+                    if(gamepad1.circle){
+                        robot.drone.setPosition(.1);
+                    }
+                }
 
             }
             //llift.setPower(lift_speed);
              //rlift.setPower(lift_speed);
             lift.update();
             telemetry.update();
+            robot.wheel.setPosition(servospeed);
         }
 
     }
