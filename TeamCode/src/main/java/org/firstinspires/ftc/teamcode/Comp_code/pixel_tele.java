@@ -25,7 +25,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-import Comp_code.bot_map;
+//import Comp_code.bot_map;
 
 //import Testing.teleptest;
 
@@ -56,15 +56,15 @@ public class pixel_tele extends LinearOpMode {
     public static int LOW = 2100; //1208 = LOW
     public static int MID = 2530; //2078 = MID
     // public static int HIGH = 500; //2900 = HIGH
-    private DcMotorEx llift;
-    private DcMotorEx rlift;
+
+
     double SpeedAdjust = 1;
     int lift_speed = 0;
     @Override
     public void runOpMode() throws InterruptedException {
 
         robot.init(hardwareMap);
-
+        Lift lift = new Lift(hardwareMap);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -89,9 +89,9 @@ public class pixel_tele extends LinearOpMode {
 //                LiftTarget = HIGH;
 //            }
             if (gamepad2.dpad_down) {
-                lift_speed = 1;
-                lift_speed = 1;
-               // LiftTarget = LOW;
+                //lift_speed = 1;
+                // lift_speed = 1;
+                LiftTarget = LOW;
             }
             else if (gamepad2.dpad_right) {
                 LiftTarget = MID;
@@ -123,12 +123,14 @@ public class pixel_tele extends LinearOpMode {
                     SpeedAdjust = 1;
                 }
             }
-            llift.setPower(lift_speed);
-            rlift.setPower(lift_speed);
+            //llift.setPower(lift_speed);
+             //rlift.setPower(lift_speed);
         }
 
     }
     class Lift {
+        public DcMotorEx llift;
+        public DcMotorEx rlift;
         public Lift(HardwareMap hardwareMap) {
             // Beep boop this is the the constructor for the lift
             // Assume this sets up the lift hardware

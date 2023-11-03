@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package Comp_code;
+package org.firstinspires.ftc.teamcode.Comp_code;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -63,15 +63,15 @@ import java.util.List;
 public class bot_map
 {
     /* Public OpMode members. */
-    public DcMotor leftFront = null;
-    public DcMotor rightFront = null;
-    public DcMotor leftBack = null;
-    public DcMotor rightBack = null;
+    public DcMotor leftFront;
+    public DcMotor rightFront;
+    public DcMotor leftBack;
+    public DcMotor rightBack;
 
-    public DcMotor climb = null;
+    public DcMotor climb;
 
-    public DcMotor intake = null;
-    public Servo drone  = null;
+    public DcMotor intake;
+    public Servo drone;
 
     public WebcamName webcam;
 //    public DcMotor rin = null;
