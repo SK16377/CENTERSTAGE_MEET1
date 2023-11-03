@@ -45,7 +45,7 @@ public class pixel_tele extends LinearOpMode {
     ElapsedTime toggleTimer = new ElapsedTime();
     //double toggleTime = .25;
 
-    private PIDController controller;
+    public PIDController controller;
     public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
     public static double f = .002;  // prevents arm from falling from gravity
 
@@ -56,10 +56,24 @@ public class pixel_tele extends LinearOpMode {
     public static int LOW = 2100; //1208 = LOW
     public static int MID = 2530; //2078 = MID
     // public static int HIGH = 500; //2900 = HIGH
-
+    public DcMotorEx larm;
+    public DcMotorEx rarm;
 
     double SpeedAdjust = 1;
-    int lift_speed = 0;
+    double lift_speed = 0;
+
+    enum intake {
+        START,
+        TUBE,
+        WHEEL,
+
+    }
+    enum wheel {
+        START,
+       // TUBE,
+        WHEEL,
+
+    }
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -69,8 +83,33 @@ public class pixel_tele extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        intake INTAKE = intake.START;
+        wheel SPIN = wheel.START;
 
         while (opModeIsActive() && !isStopRequested()) {
+
+//            switch (INTAKE) {
+//                case START:
+//                    while (gamepad1.left_trigger == 1) {
+//                        robot.intake.setPower(2);
+//                        INTAKE = intake.WHEEL;
+//                    }
+//                    break;
+//                case WHEEL:
+//
+//                        robot.wheel.setPosition(1);
+//
+//                    break;
+//                case LIFT_TWIST:
+//                    if (waitTimer2.seconds() >= waitTime2) {
+//                        robot.grab.setPosition(OPEN);
+//                        elbowDown = elbowDownState.START;
+//                    }
+                    //break;
+           // }
+
+
+
             robot.leftFront.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x) / SpeedAdjust);
             robot.rightFront.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) / SpeedAdjust);
             robot.leftBack.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x) / SpeedAdjust);
@@ -89,7 +128,7 @@ public class pixel_tele extends LinearOpMode {
 //                LiftTarget = HIGH;
 //            }
             if (gamepad2.dpad_down) {
-                //lift_speed = 1;
+                //lift_speed = 0.2;
                 // lift_speed = 1;
                 LiftTarget = LOW;
             }
@@ -112,48 +151,64 @@ public class pixel_tele extends LinearOpMode {
                     robot.intake.setPower(0);
                 }
                 while (gamepad1.left_trigger == 1) {
+                    robot.wheel.setPosition(1);
                     robot.intake.setPower(2);
+
                 }
+                if(gamepad2.circle){
+                    robot.raxon.setPosition(.2);
+                    robot.laxon.setPosition(.2);
+                }
+//                if(gamepad1.left_trigger == 1){
+//                    robot.wheel.setPosition(1);
+//                }
                 if (gamepad1.left_trigger == 0) {
                     robot.intake.setPower(0);
+
                 }
                 if (gamepad1.left_bumper) {
                     SpeedAdjust = 4;
                 } else if (gamepad1.right_bumper) {
                     SpeedAdjust = 1;
                 }
+
             }
             //llift.setPower(lift_speed);
              //rlift.setPower(lift_speed);
+            lift.update();
         }
 
     }
     class Lift {
-        public DcMotorEx llift;
-        public DcMotorEx rlift;
         public Lift(HardwareMap hardwareMap) {
             // Beep boop this is the the constructor for the lift
             // Assume this sets up the lift hardware
+
             controller = new PIDController(p, i, d);
             telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-            llift = hardwareMap.get(DcMotorEx.class,"Llift");
-            rlift = hardwareMap.get(DcMotorEx.class,"Rlift");
+            larm = hardwareMap.get(DcMotorEx.class,"Llift");
+            rarm = hardwareMap.get(DcMotorEx.class,"Rlift");
 
-            llift.setDirection(DcMotorEx.Direction.FORWARD);
-            rlift.setDirection(DcMotorEx.Direction.REVERSE);
 
-            llift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rlift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            larm.setDirection(DcMotorEx.Direction.FORWARD);
+            rarm.setDirection(DcMotorEx.Direction.REVERSE);
 
-            llift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rlift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            larm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rarm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            larm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rarm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+
         public void update() {
+            // Beep boop this is the lift update function
+            // Assume this runs some PID controller for the lift
+
             controller.setPID(p, i, d);
 
-            int larmPos = llift.getCurrentPosition();
-            int rarmPos = rlift.getCurrentPosition();
+            int larmPos = larm.getCurrentPosition();
+            int rarmPos = rarm.getCurrentPosition();
 
             double Lpid = controller.calculate(larmPos, LiftTarget);
             double Rpid = controller.calculate(rarmPos, LiftTarget);
@@ -164,14 +219,16 @@ public class pixel_tele extends LinearOpMode {
             double Lpower = Lpid + f;
             double Rpower = Rpid + f;
 
-            llift.setPower(Lpower);
-            rlift.setPower(Rpower);
+            larm.setPower(Lpower);
+            rarm.setPower(Rpower);
 
-//            telemetry.addData("pos", larmPos);
-//            telemetry.addData("pos", rarmPos);
-//            telemetry.addData("target", LiftTarget);
-//            telemetry.addData("target", LiftTarget);
-//            telemetry.update();
+//            telemetry.addData("Lpos", larmPos);
+//            telemetry.addData("Rpos", rarmPos);
+//            telemetry.addData("Ltarget", LiftTarget);
+//            telemetry.addData("Rtarget", LiftTarget);
+           // telemetry.addData("cone", cone);
+            //telemetry.addData("SSVar", SSVar);
+            telemetry.update();
         }
     }
 }

@@ -72,7 +72,9 @@ public class bot_map
 
     public DcMotor intake;
     public Servo drone;
-
+    public Servo wheel;
+    public Servo raxon;
+    public Servo laxon;
     public WebcamName webcam;
 //    public DcMotor rin = null;
 //    public DcMotor lin = null;
@@ -103,7 +105,9 @@ public class bot_map
         climb = hwMap.get(DcMotor.class, "climb");
         intake = hwMap.get(DcMotor.class, "intake");
         webcam = hwMap.get(WebcamName.class, "Webcam 1");
-
+        wheel = hwMap.get(Servo.class, "wheel");
+        raxon = hwMap.get(Servo.class, "raxon");
+        laxon = hwMap.get(Servo.class, "laxon");
 
 
 
