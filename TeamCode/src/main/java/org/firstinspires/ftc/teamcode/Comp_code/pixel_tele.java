@@ -157,8 +157,12 @@ public class pixel_tele extends LinearOpMode {
 
                 }
                 if(gamepad2.circle){
-                    robot.raxon.setPosition(.4);
-                    robot.laxon.setPosition(.4);
+                    robot.raxon.setPosition(.1);
+                    robot.laxon.setPosition(.9);
+                }
+                if(gamepad2.square){
+                    robot.raxon.setPosition(.9);
+                    robot.laxon.setPosition(.1);
                 }
 //                if(gamepad1.left_trigger == 1){
 //                    robot.wheel.setPosition(1);
