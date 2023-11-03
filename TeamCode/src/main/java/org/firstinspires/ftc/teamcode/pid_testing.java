@@ -14,8 +14,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 @TeleOp
 public class pid_testing extends OpMode {
     private PIDController controller;
-    public static double p = .006, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
-    public static double f = .05;  // prevents arm from falling from gravity
+    public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
+    public static double f = .002;  // prevents arm from falling from gravity
 
 
     public static int LiftTarget = 0; // target position
@@ -36,8 +36,8 @@ public class pid_testing extends OpMode {
         llift = hardwareMap.get(DcMotorEx.class,"Llift");
         rlift = hardwareMap.get(DcMotorEx.class,"Rlift");
 
-        llift.setDirection(DcMotorEx.Direction.REVERSE);
-        rlift.setDirection(DcMotorEx.Direction.FORWARD);
+        llift.setDirection(DcMotorEx.Direction.FORWARD);
+        rlift.setDirection(DcMotorEx.Direction.REVERSE);
 
         llift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rlift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -67,6 +67,10 @@ public class pid_testing extends OpMode {
 
         telemetry.addData("pos", larmPos);
         telemetry.addData("pos", rarmPos);
+        telemetry.addData("target", LiftTarget);
+        telemetry.addData("target", LiftTarget);
         telemetry.update();
     }
 }
+
+
