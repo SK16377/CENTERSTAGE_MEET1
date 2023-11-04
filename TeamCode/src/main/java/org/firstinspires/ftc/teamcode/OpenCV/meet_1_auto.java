@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="Centerstage auto", group="Auto")
+@Autonomous(name="centerstage auto", group="Auto")
 public class meet_1_auto extends LinearOpMode {
     OpenCvCamera webcam;
     public enum START_POSITION{

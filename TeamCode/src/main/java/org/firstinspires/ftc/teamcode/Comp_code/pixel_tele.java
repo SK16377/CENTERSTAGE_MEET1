@@ -76,6 +76,7 @@ public class pixel_tele extends LinearOpMode {
 
     }
     @Override
+
     public void runOpMode() throws InterruptedException {
 
         robot.init(hardwareMap);
@@ -127,8 +128,11 @@ public class pixel_tele extends LinearOpMode {
             while (gamepad2.right_trigger == 1) {
                 robot.climb.setPower(-4);
             }
+            if (gamepad2.right_trigger == 0) {
+                robot.climb.setPower(0);
+            }
 //            if (gamepad2.dpad_up) {
-//                LiftTarget = HIGH;
+////                LiftTarget = HIGH;
 //            }
             if (gamepad2.dpad_down) {
                 //lift_speed = 0.2;
@@ -144,9 +148,7 @@ public class pixel_tele extends LinearOpMode {
             if (gamepad2.cross) {
                 LiftTarget = 0;
             }
-            if (gamepad2.right_trigger == 0) {
-                robot.climb.setPower(0);
-//            }
+
                 while (gamepad1.right_trigger == 1) {
                     robot.intake.setPower(-4);
                 }
@@ -170,7 +172,7 @@ public class pixel_tele extends LinearOpMode {
                    // robot.wrist.setPosition(.3);
                 }
                 if(gamepad2.triangle){
-                    robot.wrist.setPosition(.75);
+                    robot.wrist.setPosition(.9);
                 }
                 if(gamepad2.cross){
                     robot.wrist.setPosition(.15);
@@ -185,22 +187,25 @@ public class pixel_tele extends LinearOpMode {
                     SpeedAdjust = 4;
                 } else if (gamepad1.right_bumper) {
                     SpeedAdjust = 1;
-                }
-                if(gamepad1.triangle){
-                    if(gamepad1.circle){
-                        robot.drone.setPosition(.1);
+                     }
+                    if (gamepad1.triangle) {
+                        if (gamepad1.circle) {
+                            robot.drone.setPosition(.1);
+                        }
                     }
-                }
+               // }
 
-            }
             //llift.setPower(lift_speed);
              //rlift.setPower(lift_speed);
             lift.update();
             telemetry.update();
             robot.wheel.setPosition(servospeed);
         }
-
     }
+    //}
+
+    //}
+
     class Lift {
         public Lift(HardwareMap hardwareMap) {
             // Beep boop this is the the constructor for the lift
@@ -253,4 +258,5 @@ public class pixel_tele extends LinearOpMode {
             telemetry.update();
         }
     }
+
 }
