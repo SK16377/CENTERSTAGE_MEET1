@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.Comp_code;/*
+package Comp_code.Comp_code;/*
      * Some declarations that are boilerplate are
      * skipped for the sake of brevity.
      * Since there are no real values to use, named constants will be used.
@@ -12,19 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 //import Comp_code.bot_map;
 
@@ -140,9 +130,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                         break;
                     case INTAKE:
                         if(waitTimer2.seconds() >= waitTime2) {
-                            robot.wrist.setPosition(.017);
-                            robot.raxon.setPosition(.88);
-                            robot.laxon.setPosition(.12);
+                            robot.wrist.setPosition(.015);
+                            robot.raxon.setPosition(.87);
+                            robot.laxon.setPosition(.13);
 
                             intake = elbowDownState.START;
                         }
@@ -180,20 +170,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                 robot.rightBack.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x) / SpeedAdjust);
 
                 //climb
-                while (gamepad2.left_trigger == 1) {
+                if (gamepad2.right_trigger > 0) {
                     robot.climb.setPower(2);
 
-                }
-                if (gamepad2.left_trigger == 0) {
-                    robot.climb.setPower(0);
-                }
-                while (gamepad2.right_trigger == 1) {
-                    robot.climb.setPower(-4);
-                }
-                if (gamepad2.right_trigger == 0) {
+                }else if (gamepad2.left_trigger > 0) {
+                    robot.climb.setPower(-2);
+                }else {
                     robot.climb.setPower(0);
                 }
 
+                if (gamepad1.square) {
+                    robot.wrist.setPosition(.5);
+                }
+                else if (gamepad1.circle) {
+                    robot.wrist.setPosition(.4);
+                }
                 //lift
                 if (gamepad2.dpad_down) {
                     //lift_speed = 0.2;
@@ -240,11 +231,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                 }
 
                 //drone
-                if (gamepad2.triangle) {
+
                     if (gamepad2.circle) {
-                        robot.drone.setPosition(.1);
+                        robot.drone.setPosition(.3);
                     }
-                }
+
 
                 lift.update();
                 telemetry.update();

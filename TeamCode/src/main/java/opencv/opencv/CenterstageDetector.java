@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opencv;
+package opencv.opencv;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
@@ -10,7 +10,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
-
+//blue
 @Disabled
 public class CenterstageDetector extends OpenCvPipeline {
     Telemetry telemetry;
@@ -29,12 +29,12 @@ public class CenterstageDetector extends OpenCvPipeline {
 
     private Location location = Location.LEFT;
     static final Rect LEFT_ROI = new Rect(
-            new Point(65, 90),
+            new Point(65, 80),
             new Point(135, 160));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(200, 95),
-            new Point(290, 170));
-    static double PERCENT_COLOR_THRESHOLD = 0.4;
+            new Point(200, 85),
+            new Point(290, 150));
+    static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public CenterstageDetector(Telemetry t) { telemetry = t; }
 
@@ -43,9 +43,12 @@ public class CenterstageDetector extends OpenCvPipeline {
 
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
         //COLOR BGR240,51,100
-        Scalar lowHSV = new Scalar(100,100,100);
-        Scalar highHSV = new Scalar(180,255,255);
-        
+
+//        Scalar lowHSV = new Scalar(100,100,100);
+//        Scalar highHSV = new Scalar(180,255,255);
+        Scalar lowHSV = new Scalar(90,50,70);
+        Scalar highHSV = new Scalar(128,255,255);
+
         Core.inRange(mat, lowHSV, highHSV, mat);
 
         Mat left = mat.submat(LEFT_ROI);
@@ -65,13 +68,13 @@ public class CenterstageDetector extends OpenCvPipeline {
         boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
 
-        if (stoneRight) {
+        if (stoneLeft) {
             location = Location.LEFT;
-            telemetry.addData("Cube Location", "right");
-        }
-        else if (stoneLeft) {
-            location = Location.RIGHT;
             telemetry.addData("Cube Location", "middle");
+        }
+        else if (stoneRight) {
+            location = Location.RIGHT;
+            telemetry.addData("Cube Location", "right");
         }
         else {
             location = Location.NOT_FOUND;
@@ -81,11 +84,11 @@ public class CenterstageDetector extends OpenCvPipeline {
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-        Scalar color = new Scalar(255, 0, 0);
-        Scalar colorCenterstage = new Scalar(0, 255, 0);
+        Scalar red = new Scalar(255, 0, 0);
+        Scalar green = new Scalar(0, 255, 0);
 
-        Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? colorCenterstage:color);
-        Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? colorCenterstage:color);
+        Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? green:red);//middle
+        Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? green:red);//right
 
         return mat;
     }

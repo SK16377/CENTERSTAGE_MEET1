@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Comp_code;
+package Comp_code.Comp_code;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -76,6 +76,7 @@ public class bot_map
     public Servo raxon;
     public Servo wrist;
     public Servo laxon;
+    public Servo claw1;
     public WebcamName webcam;
 //    public DcMotor rin = null;
 //    public DcMotor lin = null;
@@ -111,6 +112,7 @@ public class bot_map
         laxon = hwMap.get(Servo.class, "laxon");
         wrist = hwMap.get(Servo.class, "wrist");
         drone = hwMap.get(Servo.class, "drone");
+        //claw1 = hwMap.get(Servo.class, "claw1");
 
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
